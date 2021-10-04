@@ -1,8 +1,13 @@
 .search-panel {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     padding: 10px 12px;
     border-radius: 30px;
     border: none;
     background-color: rgba(13, 110, 253, .1);
     box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.search-panel:focus {
+    box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.1);
+    outline: 3px solid rgba(13, 110, 253, .1)
 }

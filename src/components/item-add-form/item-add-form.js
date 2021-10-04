@@ -2,13 +2,9 @@ import { Component } from 'react';
 import './item-add-form.css';
 
 class ItemAddForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            label: ''
-        }
+    state = {
+        label: ''
     }
-
 
     onChangeValue = (e) => {
         const label = e.target.value;
@@ -25,15 +21,17 @@ class ItemAddForm extends Component {
         const { label } = this.state;
 
         return (
-            <form className="add-form d-flex" onSubmit={this.onSubmitItem}>
+            <form className="add-form d-flex"
+                onSubmit={this.onSubmitItem}>
                 <input
                     type="text"
                     className="add-form-input form-control"
-                    placeholder="Добавить заметку"
+                    placeholder="Add task"
                     value={label}
                     name={label}
                     onChange={this.onChangeValue}
                     required />
+
                 <button type="submit" className=" btn btn-add-form" >
                     <i className="add-form-circle fas fa-plus-circle"></i>
                 </button>

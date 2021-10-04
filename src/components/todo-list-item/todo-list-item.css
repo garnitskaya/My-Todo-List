@@ -43,7 +43,8 @@
     color: #e5383b;
 }
 
-.btn-trash .trash:hover {
+.btn-trash .trash:hover,
+.btn-trash .trash:active {
     transform: rotate(720deg);
     transition: 1s all;
 }

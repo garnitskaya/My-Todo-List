@@ -9,15 +9,14 @@ import './app.css';
 
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: [
-                { label: 'Купить машину', done: true, important: false, id: 1 },
-                { label: 'Поехать на море ', done: false, important: true, id: 2 },
-                { label: 'Пополнить интернет ', done: false, important: false, id: 3 },
-            ]
-        }
+    state = {
+        data: [
+            { label: 'Купить машину', done: true, important: false, id: 1 },
+            { label: 'Поехать на море ', done: false, important: true, id: 2 },
+            { label: 'Пополнить интернет ', done: false, important: false, id: 3 },
+        ],
+        term: '',
+        filter: 'all' //done, active
     }
 
     maxId = 4;
@@ -51,21 +50,58 @@ class App extends Component {
         }))
     }
 
+    searchItem = (items, term) => {
+        if (term.length === 0) {
+            return items;
+        }
+
+        return items.filter(item => item.label.toLowerCase()
+            .indexOf(term.toLowerCase()) > -1)
+    }
+
+    onUpdateSearch = (term) => {
+        this.setState({ term });
+    }
+
+    filterItem = (items, filter) => {
+        switch (filter) {
+            case 'done':
+                return items.filter(item => item.done);
+            case 'active':
+                return items.filter(item => !item.done);
+            case 'important':
+                return items.filter(item => item.important);
+            default:
+                return items;
+        }
+    }
+
+    onFilterChange = (filter) => {
+        this.setState({ filter });
+    }
+
     render() {
-        const { data } = this.state;
+        const { data, term, filter } = this.state;
         const all = data.length;
         const done = data.filter(item => item.done).length;
         const line = ((done / all) * 100).toFixed(0);
+        const visible = this.filterItem((this.searchItem(data, term)), filter);
 
         return (
             <div className="app  ">
-                <AppHeaderInfo all={all} done={done} line={line} />
+                <AppHeaderInfo
+                    all={all}
+                    done={done}
+                    line={line} />
 
-                <SearchPanel />
-                <ItemFilter />
+                <SearchPanel onUpdateSearch={this.onUpdateSearch} />
+
+                <ItemFilter
+                    filter={filter}
+                    onFilterChange={this.onFilterChange} />
 
                 <TodoList
-                    data={data}
+                    data={visible}
                     onDelete={this.deleteItem}
                     onToggleProp={this.onToggleProp} />
 

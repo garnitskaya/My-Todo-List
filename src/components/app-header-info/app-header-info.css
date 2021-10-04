@@ -23,8 +23,8 @@
 .app-header-info span {
     position: absolute;
     display: block;
-    width: 33%;
     height: 100%;
     background-color: rgba(255, 215, 0, .5);
+    transition: .6s all;
     z-index: -1;
 }
