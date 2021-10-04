@@ -1,0 +1,19 @@
+.item-filter {
+    margin: 0 10px 20px;
+    justify-content: center;
+}
+
+.item-filter button {
+    width: 100%;
+    font-size: 20px;
+    border-radius: 0;
+    color: #6c757d;
+    text-shadow: 5px 5px 10px rgba(155, 152, 152, 0.3);
+    transition: .5s all;
+}
+
+.item-filter .btn-filter-active {
+    color: #6610f2;
+    border-bottom: 2px solid #6610f2;
+    text-shadow: 5px 5px 10px rgba(102, 16, 242, .3);
+}
