@@ -6,7 +6,7 @@
     background-color: rgba(32, 201, 151, .1);
     box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.1);
     border-radius: 30px;
-    word-break: break-all;
+    word-break: break-word;
     word-wrap: break-word;
 }
 
