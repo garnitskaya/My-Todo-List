@@ -21,6 +21,18 @@ class App extends Component {
 
     maxId = 4;
 
+    componentDidMount() {
+        const localStorageRef = localStorage.getItem('data');
+        if (localStorageRef) {
+            this.setState({ data: JSON.parse(localStorageRef) })
+        }
+    };
+
+    componentDidUpdate() {
+        localStorage.setItem('data', JSON.stringify(this.state.data));
+
+    };
+
     addItem = (label) => {
         const newItem = {
             label,
