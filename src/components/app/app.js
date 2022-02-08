@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import ItemAddForm from '../item-add-form/item-add-form';
 import ItemFilter from '../item-filter/item-filter';
 import AppHeaderInfo from '../app-header-info/app-header-info';
@@ -19,8 +20,6 @@ class App extends Component {
         filter: 'all' //done, active
     }
 
-    maxId = 4;
-
     componentDidMount() {
         const localStorageRef = localStorage.getItem('data');
         if (localStorageRef) {
@@ -38,7 +37,7 @@ class App extends Component {
             label,
             done: false,
             important: false,
-            id: this.maxId++
+            id: uuidv4()
         }
         this.setState(({ data }) => ({
             data: [...data, newItem]
@@ -96,7 +95,7 @@ class App extends Component {
         const { data, term, filter } = this.state;
         const all = data.length;
         const done = data.filter(item => item.done).length;
-        const line = ((done / all) * 100).toFixed(0);
+        const line = all ? ((done / all) * 100).toFixed(0) : 0;
         const visible = this.filterItem((this.searchItem(data, term)), filter);
 
         return (
