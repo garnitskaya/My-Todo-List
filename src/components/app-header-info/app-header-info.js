@@ -8,7 +8,7 @@ const AppHeaderInfo = ({ all, done, line }) => {
                 <span style={{ width: `${line}%` }}></span>
                 <b>{done}</b >of <b>{all}</b> tasks done
             </div>
-        </header >
+        </header>
     )
 }
 

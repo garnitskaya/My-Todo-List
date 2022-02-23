@@ -25,7 +25,7 @@ const ItemFilter = ({ filter, onFilterChange }) => {
     return (
         <div className="item-filter d-flex" >
             {button}
-        </div >
+        </div>
     )
 }
 
