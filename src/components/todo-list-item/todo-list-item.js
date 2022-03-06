@@ -1,9 +1,7 @@
 import './todo-list-item.css';
 
 
-const TodoListItem = (props) => {
-    const { label, onDelete, onToggleProp, important, done } = props;
-
+const TodoListItem = ({ label, onDelete, onToggleProp, important, done }) => {
     let classes = "list-item d-flex";
 
     if (important) {

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import ItemAddForm from '../item-add-form/item-add-form';
 import ItemFilter from '../item-filter/item-filter';
@@ -9,59 +9,62 @@ import SearchPanel from '../search-panel/search-panel';
 import './app.css';
 
 
-class App extends Component {
-    state = {
-        data: [
-            { label: 'Купить машину', done: true, important: false, id: 1 },
-            { label: 'Поехать на море ', done: false, important: true, id: 2 },
-            { label: 'Пополнить интернет ', done: false, important: false, id: 3 },
-        ],
-        term: '',
-        filter: 'all' //done, active
-    }
+const App = () => {
 
-    componentDidMount() {
+    const dataItem = [
+        { label: 'Купить машину', done: true, important: false, id: 1 },
+        { label: 'Поехать на море ', done: false, important: true, id: 2 },
+        { label: 'Пополнить интернет ', done: false, important: false, id: 3 },
+    ]
+
+    const [data, setData] = useState(dataItem);
+    const [term, setTerm] = useState('');
+    const [filter, setFilter] = useState('all');//done, active
+
+    useEffect(() => {
         const localStorageRef = localStorage.getItem('data');
         if (localStorageRef) {
-            this.setState({ data: JSON.parse(localStorageRef) })
+            setData(JSON.parse(localStorageRef))
         }
-    };
+    }, []);
 
-    componentDidUpdate() {
-        localStorage.setItem('data', JSON.stringify(this.state.data));
+    const saveData = (value) => {
+        localStorage.setItem('data', JSON.stringify(value));
+    }
 
-    };
-
-    addItem = (label) => {
+    const addItem = (label) => {
         const newItem = {
             label,
             done: false,
             important: false,
             id: uuidv4()
         }
-        this.setState(({ data }) => ({
-            data: [...data, newItem]
-        }))
+        setData(data => {
+            const newData = [...data, newItem];
+            saveData(newData);
+            return newData;
+        });
     }
 
-    deleteItem = (id) => {
-        this.setState(({ data }) => ({
-            data: data.filter(item => item.id !== id)
-        }))
+    const deleteItem = (id) => {
+        setData(data => {
+            const newData = data.filter(item => item.id !== id);
+            saveData(newData);
+            return newData;
+        })
     }
 
-    onToggleProp = (id, prop) => {
-        this.setState(({ data }) => ({
-            data: data.map(item => {
-                if (item.id === id) {
-                    return { ...item, [prop]: !item[prop] }
-                }
-                return item;
-            })
-        }))
+    const onToggleProp = (id, prop) => {
+        setData(data => data.map(item => {
+            if (item.id === id) {
+                return { ...item, [prop]: !item[prop] }
+            }
+            return item;
+        })
+        )
     }
 
-    searchItem = (items, term) => {
+    const searchItem = (items, term) => {
         if (term.length === 0) {
             return items;
         }
@@ -70,11 +73,11 @@ class App extends Component {
             .indexOf(term.toLowerCase()) > -1)
     }
 
-    onUpdateSearch = (term) => {
-        this.setState({ term });
+    const onUpdateSearch = (term) => {
+        setTerm(term);
     }
 
-    filterItem = (items, filter) => {
+    const filterItem = (items, filter) => {
         switch (filter) {
             case 'done':
                 return items.filter(item => item.done);
@@ -87,39 +90,37 @@ class App extends Component {
         }
     }
 
-    onFilterChange = (filter) => {
-        this.setState({ filter });
+    const onFilterChange = (filter) => {
+        setFilter(filter);
     }
 
-    render() {
-        const { data, term, filter } = this.state;
-        const all = data.length;
-        const done = data.filter(item => item.done).length;
-        const line = all ? ((done / all) * 100).toFixed(0) : 0;
-        const visible = this.filterItem((this.searchItem(data, term)), filter);
 
-        return (
-            <div className="app  ">
-                <AppHeaderInfo
-                    all={all}
-                    done={done}
-                    line={line} />
+    const all = data.length;
+    const done = data.filter(item => item.done).length;
+    const line = all ? ((done / all) * 100).toFixed(0) : 0;
+    const visible = filterItem((searchItem(data, term)), filter);
 
-                <SearchPanel onUpdateSearch={this.onUpdateSearch} />
+    return (
+        <div className="app  ">
+            <AppHeaderInfo
+                all={all}
+                done={done}
+                line={line} />
 
-                <ItemFilter
-                    filter={filter}
-                    onFilterChange={this.onFilterChange} />
+            <SearchPanel onUpdateSearch={onUpdateSearch} />
 
-                <TodoList
-                    data={visible}
-                    onDelete={this.deleteItem}
-                    onToggleProp={this.onToggleProp} />
+            <ItemFilter
+                filter={filter}
+                onFilterChange={onFilterChange} />
 
-                <ItemAddForm onAdd={this.addItem} />
-            </div>
-        )
-    }
+            <TodoList
+                data={visible}
+                onDelete={deleteItem}
+                onToggleProp={onToggleProp} />
+
+            <ItemAddForm onAdd={addItem} />
+        </div>
+    )
 }
 
 export default App;
