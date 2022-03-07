@@ -1,6 +1,12 @@
+import { FC } from 'react';
 import './item-filter.css';
 
-const ItemFilter = ({ filter, onFilterChange }) => {
+interface ItemFilterProps {
+    filter: string;
+    onFilterChange: (filter: string) => void;
+}
+
+const ItemFilter: FC<ItemFilterProps> = ({ filter, onFilterChange }) => {
 
     const buttons = [
         { name: 'all', label: 'all' },

@@ -1,15 +1,19 @@
-import { useState } from 'react';
+import { ChangeEvent, FC, SyntheticEvent, useState } from 'react';
 import './item-add-form.css';
 
-const ItemAddForm = ({ onAdd }) => {
-    const [label, setLabel] = useState('');
+interface ItemAddFormProps {
+    onAdd: (label: string) => void;
+}
 
-    const onChangeValue = (e) => {
+const ItemAddForm: FC<ItemAddFormProps> = ({ onAdd }) => {
+    const [label, setLabel] = useState<string>('');
+
+    const onChangeValue = (e: ChangeEvent<HTMLInputElement>): void => {
         const label = e.target.value;
         setLabel(label);
     }
 
-    const onSubmitItem = (e) => {
+    const onSubmitItem = (e: SyntheticEvent): void => {
         e.preventDefault();
         onAdd(label);
         setLabel('');

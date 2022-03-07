@@ -1,7 +1,16 @@
+import { FC, SyntheticEvent } from 'react';
+import { IData } from '../app/app';
 import './todo-list-item.css';
 
+interface TodoListItemProps {
+    items: IData;
+    onDelete: () => void;
+    onToggleProp: (e: SyntheticEvent) => void;
+}
 
-const TodoListItem = ({ label, onDelete, onToggleProp, important, done }) => {
+const TodoListItem: FC<TodoListItemProps> = ({ items, onDelete, onToggleProp }) => {
+    const { done, important, label } = items;
+
     let classes = "list-item d-flex";
 
     if (important) {

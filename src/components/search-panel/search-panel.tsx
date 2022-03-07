@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { FC, useState, ChangeEvent } from 'react';
 import './search-panel.css';
 
-const SearchPanel = (props) => {
-    const [term, setTerm] = useState('');
+interface SearchPanelProps {
+    onUpdateSearch: (term: string) => void
+}
 
-    const onUpdateSearch = (e) => {
+const SearchPanel: FC<SearchPanelProps> = (props) => {
+    const [term, setTerm] = useState<string>('');
+
+    const onUpdateSearch = (e: ChangeEvent<HTMLInputElement>): void => {
         const term = e.target.value;
         setTerm(term)
         props.onUpdateSearch(term);
